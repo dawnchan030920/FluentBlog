@@ -21,10 +21,10 @@
 				},
 				"match": {
 					"description": "Match mode of the item",
-					"type": "string",
+					"type": "number",
 					"enum": [
-						"all",
-						"prefix"
+						0,
+						1
 					]
 				},
 				"isHome": {
