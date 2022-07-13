@@ -1,36 +1,45 @@
 {
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "Menu",
-			"description": "Items of the menu",
-			"type": "array",
-			"items": [
-				{
-					"type": "object",
-					"properties": {
-						"tag": {
-							"description": "Tag of the item",
-							"type": "string"
-						},
-						"icon": {
-							"description": "Icon url of the item",
-							"type": "string"
-						},
-						"url": {
-							"description": "Link Url of the item",
-							"type": "string"
-						},
-						"match": {
-							"description": "Match mode of the item",
-							"type": "string",
-							"enum": [ "all", "prefix" ]
-						},
-						"isHome": {
-							"description": "Whether is home page",
-							"type": "boolean",
-							"default": false
-						}
-					},
-					"required": [ "tag", "icon", "url", "match", "isHome" ]
+	"description": "Items of the menu",
+	"type": "array",
+	"items": [
+		{
+			"type": "object",
+			"properties": {
+				"tag": {
+					"description": "Tag of the item",
+					"type": "string"
+				},
+				"icon": {
+					"description": "Icon url of the item",
+					"type": "string"
+				},
+				"url": {
+					"description": "Link Url of the item",
+					"type": "string"
+				},
+				"match": {
+					"description": "Match mode of the item",
+					"type": "string",
+					"enum": [
+						"all",
+						"prefix"
+					]
+				},
+				"isHome": {
+					"description": "Whether is home page",
+					"type": "boolean",
+					"default": false
 				}
+			},
+			"required": [
+				"tag",
+				"icon",
+				"url",
+				"match",
+				"isHome"
 			]
+		}
+	]
 }
