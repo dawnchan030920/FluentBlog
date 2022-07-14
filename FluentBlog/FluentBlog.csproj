@@ -12,4 +12,10 @@
     <PackageReference Include="Microsoft.Fast.Components.FluentUI" Version="1.4.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FluentBlog.Model\FluentBlog.Model.csproj" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+
 </Project>

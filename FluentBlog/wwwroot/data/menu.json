@@ -1,0 +1,9 @@
+[
+  {
+    "tag": "Home",
+    "icon": "home",
+    "url": "/",
+    "match": 1,
+    "isHome": true
+  }
+]
