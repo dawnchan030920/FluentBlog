@@ -1,9 +1,16 @@
 [
   {
     "tag": "Home",
-    "icon": "home",
+    "icon": "ms-Icon ms-Icon--Home",
     "url": "/",
     "match": 1,
     "isHome": true
+  },
+  {
+    "tag": "Archive",
+    "icon": "ms-Icon ms-Icon--Archive",
+    "url": "/archive",
+    "match": 0,
+    "isHome": false
   }
 ]

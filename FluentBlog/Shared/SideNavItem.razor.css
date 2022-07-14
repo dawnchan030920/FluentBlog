@@ -1,6 +1,6 @@
 ﻿.item {
     display: grid;
-    grid-template-columns: 5px, auto;
+    grid-template-columns: 5px auto;
 }
 
   .item > span.activeindicator {

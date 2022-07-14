@@ -1,0 +1,25 @@
+﻿@inject MenuService MenuService
+
+<FluentCard style="display: table-cell">
+	<div class="sidenav">
+		<ul>
+			@foreach (var item in MenuItems)
+			{
+				<li>
+					<div>
+						<SideNavItem ItemData=@item></SideNavItem>
+					</div>
+				</li>
+			}
+		</ul>
+	</div>
+</FluentCard>
+
+@code {
+	public List<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		MenuItems = await MenuService.GetMenuItemsAsync();
+	}
+}

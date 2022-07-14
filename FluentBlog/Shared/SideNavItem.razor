@@ -8,12 +8,13 @@
 
 		<FluentAnchor Href=@ItemData.Url Appearance=@(IsActive() ? Appearance.Neutral : Appearance.Stealth)>
 			<i slot="start" class=@ItemData.Icon></i>
-			<span>@ItemData.Tag</span>
+			<span style="@(IsActive() ? "font-weight: 600" : string.Empty)">@ItemData.Tag</span>
 		</FluentAnchor>
 	</div>
 }
 
 @code {
+	[Parameter]
 	public MenuItem? ItemData { get; set; }
 
 	protected override void OnInitialized()
@@ -33,6 +34,4 @@
 		}
 		return flag;
 	}
-
-
 }
