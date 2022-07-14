@@ -1,0 +1,38 @@
+﻿@inject NavigationManager NavigationManager
+@inject MenuService MenuService
+
+@if (ItemData is not null)
+{
+	<div class="item">
+		<span class="activeindicator" style=@(IsActive() ? string.Empty : "display: none")></span>
+
+		<FluentAnchor Href=@ItemData.Url Appearance=@(IsActive() ? Appearance.Neutral : Appearance.Stealth)>
+			<i slot="start" class=@ItemData.Icon></i>
+			<span>@ItemData.Tag</span>
+		</FluentAnchor>
+	</div>
+}
+
+@code {
+	public MenuItem? ItemData { get; set; }
+
+	protected override void OnInitialized()
+	{
+		NavigationManager.LocationChanged += (s, e) => StateHasChanged();
+	}
+
+	private bool IsActive()
+	{
+		var href = ItemData?.Url;
+		var match = ItemData?.Match;
+		bool flag = false;
+		if (href is not null)
+		{
+			var relative = $"/{NavigationManager.ToBaseRelativePath(NavigationManager.Uri).ToLower()}";
+			flag = match == NavLinkMatch.All ? relative == href.ToLower() : relative.StartsWith(href.ToLower());
+		}
+		return flag;
+	}
+
+
+}
