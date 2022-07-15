@@ -1,14 +1,15 @@
 ﻿@inject NavigationManager NavigationManager
 @inject MenuService MenuService
+@inject UriValidator UriValidator
 
 @if (ItemData is not null)
 {
 	<div class="item">
-		<span class="activeindicator" style=@(IsActive() ? string.Empty : "display: none")></span>
+		<span class="activeindicator" style=@(UriValidator.IsActive(ItemData) ? string.Empty : "display: none")></span>
 
-		<FluentAnchor Href=@ItemData.Url Appearance=@(IsActive() ? Appearance.Neutral : Appearance.Stealth)>
+		<FluentAnchor Href=@ItemData.Url Appearance=@(UriValidator.IsActive(ItemData) ? Appearance.Neutral : Appearance.Stealth)>
 			<i slot="start" class=@ItemData.Icon></i>
-			<span style="@(IsActive() ? "font-weight: 600" : string.Empty)">@ItemData.Tag</span>
+			<span style="@(UriValidator.IsActive(ItemData) ? "font-weight: 600" : string.Empty)">@ItemData.Tag</span>
 		</FluentAnchor>
 	</div>
 }
@@ -20,18 +21,5 @@
 	protected override void OnInitialized()
 	{
 		NavigationManager.LocationChanged += (s, e) => StateHasChanged();
-	}
-
-	private bool IsActive()
-	{
-		var href = ItemData?.Url;
-		var match = ItemData?.Match;
-		bool flag = false;
-		if (href is not null)
-		{
-			var relative = $"/{NavigationManager.ToBaseRelativePath(NavigationManager.Uri).ToLower()}";
-			flag = match == NavLinkMatch.All ? relative == href.ToLower() : relative.StartsWith(href.ToLower());
-		}
-		return flag;
 	}
 }
