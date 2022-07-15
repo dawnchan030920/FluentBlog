@@ -7,14 +7,17 @@ namespace FluentBlog.Helpers
     {
         private HttpClient client;
 
-        public MenuService(HttpClient client)
+        private IConfiguration configuration;
+
+        public MenuService(HttpClient client, IConfiguration configuration)
         {
             this.client = client;
+            this.configuration = configuration;
         }
 
         public async Task<List<MenuItem>> GetMenuItemsAsync()
         {
-            return await client.GetFromJsonAsync<List<MenuItem>>("data/menu.json");
+            return await client.GetFromJsonAsync<List<MenuItem>>(configuration["menuConfigPath"]);
         }
     }
 }
