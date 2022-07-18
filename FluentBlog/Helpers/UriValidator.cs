@@ -13,7 +13,7 @@ namespace FluentBlog.Helpers
 			this.navigationManager = navigationManager;
         }
 
-        public bool IsActive(MenuItem item)
+        public bool IsActive(MenuItem? item)
         {
 			var href = item?.Url;
 			var match = item?.Match;
