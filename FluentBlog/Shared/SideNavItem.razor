@@ -2,17 +2,10 @@
 @inject MenuService MenuService
 @inject UriValidator UriValidator
 
-@if (ItemData is not null)
-{
-	<div class="item">
-		<span class="activeindicator" style=@(UriValidator.IsActive(ItemData) ? string.Empty : "display: none")></span>
-
-		<FluentAnchor Href=@ItemData.Url Appearance=@(UriValidator.IsActive(ItemData) ? Appearance.Neutral : Appearance.Stealth)>
-			<i slot="start" class=@ItemData.Icon></i>
-			<span style="@(UriValidator.IsActive(ItemData) ? "font-weight: 600" : string.Empty)">@ItemData.Tag</span>
-		</FluentAnchor>
-	</div>
-}
+<FluentOption Value="@ItemData?.Tag" Selected="@UriValidator.IsActive(ItemData)">
+	@*<FluentIcon Name="@ItemData?.Icon" Filled=false Size="@IconSize.Size20"></FluentIcon>*@
+	@ItemData?.Tag
+</FluentOption>
 
 @code {
 	[Parameter]

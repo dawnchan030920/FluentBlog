@@ -1,19 +1,18 @@
 ﻿@inject MenuService MenuService
 
-<FluentCard style="display: table-cell">
-	<div class="sidenav">
-		<ul>
-			@foreach (var item in MenuItems)
-			{
-				<li>
-					<div>
-						<SideNavItem ItemData=@item></SideNavItem>
-					</div>
-				</li>
-			}
-		</ul>
-	</div>
-</FluentCard>
+<FluentListbox TValue="string">
+	@if (MenuItems is not null)
+	{
+		@foreach (var item in MenuItems)
+		{
+			<SideNavItem ItemData="item"></SideNavItem>
+		}
+	}
+	else
+	{
+		<FluentProgress></FluentProgress>
+	}
+</FluentListbox>
 
 @code {
 	public List<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
