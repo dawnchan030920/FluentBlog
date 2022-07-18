@@ -1,5 +1,28 @@
 ﻿@inject MenuService MenuService
+@inject NavigationManager NavigationManager
+@inject UriValidator UriValidator
 
 <FluentCard>
+	<div class="topbar">
+		<div class="left">
 
+		</div>
+		<div class="mid">
+
+		</div>
+		<div class="right">
+
+		</div>
+	</div>
 </FluentCard>
+
+@code {
+	MenuItem? menuItem;
+
+	protected override async Task OnInitializedAsync()
+	{
+		var menuItems = await MenuService.GetMenuItemsAsync();
+
+		menuItem = menuItems.Find((match) => UriValidator.IsActive(match));
+	}
+}

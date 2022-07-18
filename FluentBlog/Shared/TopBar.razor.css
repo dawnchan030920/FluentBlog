@@ -1,1 +1,16 @@
-﻿
+﻿.topbar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+}
+
+.left {
+    grid-column: 1;
+}
+
+.mid {
+    grid-column: 2;
+}
+
+.right {
+    grid-column: 3;
+}
