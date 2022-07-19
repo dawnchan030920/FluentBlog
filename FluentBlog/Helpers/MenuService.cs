@@ -14,7 +14,7 @@ namespace FluentBlog.Helpers
         {
             this.httpClientFactory = httpClientFactory;
             this.configuration = configuration;
-            client = httpClientFactory.CreateClient("MenuAPI");
+            client = this.httpClientFactory.CreateClient("MenuAPI");
         }
 
         public async Task<List<MenuItem>?> GetMenuItemsAsync()

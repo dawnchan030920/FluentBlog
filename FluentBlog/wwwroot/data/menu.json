@@ -1,7 +1,7 @@
 [
   {
     "tag": "Home",
-    "icon": "home_more",
+    "icon": "home",
     "url": "/",
     "match": 1,
     "isHome": true
