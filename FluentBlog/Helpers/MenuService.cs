@@ -6,16 +6,18 @@ namespace FluentBlog.Helpers
     public class MenuService
     {
         private HttpClient client;
+        private IHttpClientFactory httpClientFactory;
 
         private IConfiguration configuration;
 
-        public MenuService(HttpClient client, IConfiguration configuration)
+        public MenuService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
-            this.client = client;
+            this.httpClientFactory = httpClientFactory;
             this.configuration = configuration;
+            client = httpClientFactory.CreateClient("MenuAPI");
         }
 
-        public async Task<List<MenuItem>> GetMenuItemsAsync()
+        public async Task<List<MenuItem>?> GetMenuItemsAsync()
         {
             return await client.GetFromJsonAsync<List<MenuItem>>(configuration["menuConfigPath"]);
         }

@@ -1,14 +1,14 @@
 [
   {
     "tag": "Home",
-    "icon": "Home",
+    "icon": "home_more",
     "url": "/",
     "match": 1,
     "isHome": true
   },
   {
     "tag": "Archive",
-    "icon": "Archive",
+    "icon": "archive",
     "url": "/archive",
     "match": 0,
     "isHome": false

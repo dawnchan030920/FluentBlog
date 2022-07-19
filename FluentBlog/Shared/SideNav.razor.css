@@ -1,1 +1,3 @@
-﻿
+﻿fluent-listbox ::deep :host(:focus-within:not([disabled])) {
+    box-shadow: 0 0 0 0px var(--focus-stroke-outer) inset;
+}

@@ -2,8 +2,8 @@
 @inject MenuService MenuService
 @inject UriValidator UriValidator
 
-<FluentOption Value="@ItemData?.Tag" Selected="@UriValidator.IsActive(ItemData)">
-	@*<FluentIcon Name="@ItemData?.Icon" Filled=false Size="@IconSize.Size20"></FluentIcon>*@
+<FluentOption Value="@ItemData?.Tag" Selected="@UriValidator.IsActive(ItemData)" @onclick="Navigate">
+	<FluentIcon Name="@ItemData?.Icon" Filled=false Size="@IconSize.Size20"></FluentIcon>
 	@ItemData?.Tag
 </FluentOption>
 
@@ -15,4 +15,6 @@
 	{
 		NavigationManager.LocationChanged += (s, e) => StateHasChanged();
 	}
+
+	private void Navigate() => NavigationManager.NavigateTo(ItemData is null ? string.Empty : ItemData.Url);
 }
