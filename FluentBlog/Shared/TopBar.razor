@@ -23,6 +23,6 @@
 	{
 		var menuItems = await MenuService.GetMenuItemsAsync();
 
-		menuItem = menuItems.Find((match) => UriValidator.IsActive(match));
+		menuItem = menuItems?.Find((match) => UriValidator.IsActive(match));
 	}
 }
