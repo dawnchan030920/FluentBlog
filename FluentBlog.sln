@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataContracts", "DataContra
 		E_5_4Projects_4FluentBlog_4Menu_1json__JsonSchema = 
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentBlog.Model", "FluentBlog.Model\FluentBlog.Model.csproj", "{916A01E9-2B71-4B4D-BFC0-A8611B21424B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBlog.Model", "FluentBlog.Model\FluentBlog.Model.csproj", "{916A01E9-2B71-4B4D-BFC0-A8611B21424B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
