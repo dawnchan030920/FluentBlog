@@ -1,0 +1,25 @@
+﻿@using FluentBlog.Store.Theme
+@using Microsoft.Fast.Components.FluentUI
+@using Microsoft.Fast.Components.FluentUI.DesignTokens
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using FluentBlog.Service.Theme
+@inherits FluxorComponent
+@inject IState<ThemeState> ThemeState
+
+<Fluxor.Blazor.Web.StoreInitializer />
+
+<FluentDesignSystemProvider BaseLayerLuminance="@(ThemeDefaultLightDarkService.DefaultLightDarkLuminance[ThemeState.Value.LightDarkTheme])">
+    <Router AppAssembly="typeof(FluentBlog.Pages.Locator).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <NotFound />
+            </LayoutView>
+        </NotFound>
+    </Router>
+</FluentDesignSystemProvider>

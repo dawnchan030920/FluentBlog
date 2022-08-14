@@ -1,0 +1,25 @@
+﻿@using FluentBlog.Service.Page
+@using FluentBlog.Model.Page
+@using FluentBlog.Store.Page
+@using FluentBlog.Store.Page.Action
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@inject IState<PageState> PageState
+@inject IDispatcher Dispatcher
+@inherits FluxorComponent
+@page "/"
+
+<h3>Index</h3>
+<p>@PageState.Value.CurrentPage?.Tag</p>
+
+@code {
+	private PageData? data;
+
+	protected override void OnInitialized()
+	{
+		data = PageDataProvider.Datas[PageDataProvider.Home];
+		Dispatcher.Dispatch(new PageResetAction(data));
+
+		base.OnInitialized();
+	}
+}

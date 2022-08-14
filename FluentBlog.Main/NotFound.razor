@@ -1,0 +1,15 @@
+﻿@using FluentBlog.Store.Page.Action
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@inherits FluxorComponent
+@inject IDispatcher Dispatcher
+
+<p role="alert">Sorry, there's nothing at this address.</p>
+
+@code {
+	protected override void OnInitialized()
+	{
+		Dispatcher.Dispatch(new DataClearAction());
+		base.OnInitialized();
+	}
+}

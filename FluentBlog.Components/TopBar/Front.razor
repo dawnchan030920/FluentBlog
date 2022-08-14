@@ -1,0 +1,29 @@
+﻿@using FluentBlog.Store.Page
+@using FluentBlog.Model.Page
+@using FluentBlog.Asset
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using Microsoft.Extensions.Configuration
+@inherits FluxorComponent
+@inject IState<PageState> PageState
+@inject IConfiguration Configuration
+
+<FluentToolbar>
+	@if (PageState.Value.IsHomeOrUndefined)
+	{
+		@if (PageState.Value.CurrentPage is not null) // Home
+		{
+			<FluentButton Appearance="Appearance.Stealth">
+				<FluentIcon Name="@FluentIcons.Filter" Filled=false Size="IconSize.Size20" />
+			</FluentButton>
+		}
+		else { } // 404
+	}
+	else
+	{
+		<a href="/">
+			<img src="@Configuration["IconPath"]" style="width: 32px; height: 32px;" />
+		</a>
+	}
+	<FluentSearch Placeholder="@Configuration["SearchText"]" />
+</FluentToolbar>

@@ -1,0 +1,38 @@
+﻿@using FluentBlog.Model.Page
+@using FluentBlog.Service.Page
+@using FluentBlog.Asset
+@using FluentBlog.Store.Page
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@using Microsoft.Extensions.Configuration
+@inherits FluxorComponent
+@inject IState<PageState> PageState
+@inject IConfiguration Configuration
+
+<TypeRampBaseFontSize Value="24px">
+	<FluentBreadcrumb BackReference="@context">
+		<FluentBreadcrumbItem Href="@(PageState.Value.CurrentPage is null ? "/" : PageState.Value.CurrentPage.IndexUrl)">
+			@if (PageState.Value.IsHomeOrUndefined)
+			{
+				<img src="@Configuration["IconPath"]" slot="start" style="width: 32px; height: 32px;" />
+				<span>@Configuration["SiteName"]</span>
+			}
+			else
+			{
+				<FluentIcon Name="@PageState.Value.CurrentPage?.Icon" Filled=false Size="IconSize.Size32" Slot="start" />
+				<span>@PageState.Value.CurrentPage?.Tag</span>
+			}
+			<FluentIcon Name="@FluentIcons.ChevronRight" Filled=false Size="IconSize.Size24" Slot="separator" UseAccentColor=false />
+		</FluentBreadcrumbItem>
+		@if (PageState.Value.CurrentSubPages is not null)
+		{
+			@foreach (var sub in PageState.Value.CurrentSubPages)
+			{
+				<FluentBreadcrumbItem Href="@sub.Url">
+					<span>@sub.Title</span>
+					<FluentIcon Name="@FluentIcons.ChevronRight" Filled=false Size="IconSize.Size24" Slot="separator" UseAccentColor=false />
+				</FluentBreadcrumbItem>
+			}
+		}
+	</FluentBreadcrumb>
+</TypeRampBaseFontSize>

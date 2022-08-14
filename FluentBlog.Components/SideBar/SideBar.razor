@@ -1,0 +1,23 @@
+﻿@using FluentBlog.Model.Page
+@using FluentBlog.Service.Page
+@using FluentBlog.Store.Page;
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@inherits FluxorComponent
+@inject IState<PageState> PageState
+
+<FluentListbox TValue="string">
+	@foreach(var i in Datas)
+	{
+		PageData item = i;
+		<SideBarItem PageData="@item" Selected="@(PageState.Value.CurrentPage == i)" />
+	}
+</FluentListbox>
+	
+@code {
+	public List<PageData> Datas { get; } = new List<PageData>()
+	{
+		PageDataProvider.Datas[PageDataProvider.Home],
+		PageDataProvider.Datas[PageDataProvider.Tags]
+	};
+}

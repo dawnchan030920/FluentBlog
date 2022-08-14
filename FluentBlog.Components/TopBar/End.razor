@@ -1,0 +1,30 @@
+﻿@using FluentBlog.Store.Theme
+@using FluentBlog.Store.Theme.Action
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@inherits FluxorComponent
+@inject IState<ThemeState> ThemeState
+@inject IDispatcher Dispatcher
+
+<FluentToolbar>
+
+	<FluentButton Appearance="Appearance.Stealth">
+		<FluentIcon Name="@FluentIcons.Person" Filled=false Size="IconSize.Size20" />
+	</FluentButton>
+
+	<FluentButton Appearance="Appearance.Stealth">
+		<FluentIcon Name="@FluentIcons.RSS" Filled=false Size="IconSize.Size20" />
+	</FluentButton>
+
+	<FluentButton Appearance="Appearance.Stealth" @onclick="ChangeTheme">
+		<FluentIcon Name="@(ThemeState.Value.LightDarkTheme == Model.Theme.LightDarkTheme.Light ? FluentIcons.WeatherMoon : FluentIcons.WeatherSunny)" Filled=false Size="@IconSize.Size20" />
+	</FluentButton>
+
+</FluentToolbar>
+
+@code {
+	public void ChangeTheme()
+	{
+		Dispatcher.Dispatch(new ThemeLightDarkChangeAction());
+	}
+}

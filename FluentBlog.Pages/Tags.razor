@@ -1,0 +1,52 @@
+﻿@using FluentBlog.Service.Page
+@using FluentBlog.Model.Page
+@using FluentBlog.Store.Page
+@using FluentBlog.Store.Page.Action
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@inject IState<PageState> PageState
+@inject IDispatcher Dispatcher
+@inherits FluxorComponent
+@page "/tags"
+@page "/tags/{name}"
+
+<h3>Tags</h3>
+<p>@PageState.Value.CurrentPage?.Tag</p>
+<p>@Name</p>
+
+@code {
+	private PageData? page;
+	private List<SubPageData>? sub;
+
+	[Parameter]
+	public string? Name { get; set; }
+
+	protected override void OnInitialized()
+	{
+		page = PageDataProvider.Datas[PageDataProvider.Tags];
+		UpdatePageState();
+
+		base.OnInitialized();
+	}
+
+	protected override void OnParametersSet()
+	{
+		UpdatePageState();
+
+		base.OnParametersSet();
+	}
+
+	private void UpdatePageState()
+	{
+		if (Name is not null)
+		{
+			sub = new List<SubPageData>();
+			sub.Add(new SubPageData(Name, $"/tags/{Name}"));
+			Dispatcher.Dispatch(new DataSetAction(page, sub));
+		}
+		else
+		{
+			Dispatcher.Dispatch(new PageResetAction(page));
+		}
+	}
+}

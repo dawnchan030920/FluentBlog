@@ -1,0 +1,17 @@
+﻿@using FluentBlog.Model.Page
+@inject NavigationManager NavigationManager
+
+<FluentOption TValue="string" @onclick="Navigate" Selected="@Selected">
+	<FluentIcon Name="@PageData?.Icon" Filled=@Selected Size="IconSize.Size20" Slot="start" />
+	<span>@PageData?.Tag</span>
+</FluentOption>
+
+@code {
+    [Parameter]
+    public PageData? PageData { get; set; }
+
+    [Parameter]
+    public bool Selected { get; set; }
+
+    private void Navigate() => NavigationManager.NavigateTo(PageData is null ? "/" : PageData.IndexUrl);
+}
