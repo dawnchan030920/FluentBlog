@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,11 @@ namespace FluentBlog.Model.Article
 {
 	public class ArticleOverviewData
 	{
-		public string Article { get; set; }
+		public string Url { get; set; }
 
-		public string Title { get; set; }
+		public RenderFragment Title { get; set; }
 
-		public string Description { get; set; }
+		public RenderFragment Description { get; set; }
 
 		public List<string> CategoryChain { get; set; }
 
@@ -22,9 +23,9 @@ namespace FluentBlog.Model.Article
 
 		public string Image { get; set; }
 
-		public ArticleOverviewData(string article, string title, string description, List<string> categoryChain, List<string> tags, DateTime editTime, string image)
+		public ArticleOverviewData(string url, RenderFragment title, RenderFragment description, List<string> categoryChain, List<string> tags, DateTime editTime, string image)
 		{
-			Article = article;
+			Url = url;
 			Title = title;
 			Description = description;
 			CategoryChain = categoryChain;
