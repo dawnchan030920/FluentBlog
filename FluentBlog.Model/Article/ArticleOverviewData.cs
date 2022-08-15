@@ -11,19 +11,19 @@ namespace FluentBlog.Model.Article
 	{
 		public string Url { get; set; }
 
-		public RenderFragment Title { get; set; }
+		public string Title { get; set; }
 
-		public RenderFragment Description { get; set; }
+		public string? Description { get; set; }
 
-		public List<string> CategoryChain { get; set; }
+		public List<string>? CategoryChain { get; set; }
 
-		public List<string> Tags { get; set; }
+		public List<string>? Tags { get; set; }
 
 		public DateTime EditTime { get; set; }
 
-		public string Image { get; set; }
+		public string? Image { get; set; }
 
-		public ArticleOverviewData(string url, RenderFragment title, RenderFragment description, List<string> categoryChain, List<string> tags, DateTime editTime, string image)
+		public ArticleOverviewData(string url, string title, string? description, List<string>? categoryChain, List<string>? tags, DateTime editTime, string? image)
 		{
 			Url = url;
 			Title = title;

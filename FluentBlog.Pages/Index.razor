@@ -2,9 +2,14 @@
 @using FluentBlog.Model.Page
 @using FluentBlog.Store.Page
 @using FluentBlog.Store.Page.Action
+@using FluentBlog.Store.ArticleOverview
+@using FluentBlog.Store.ArticleOverviewCriteria
+@using FluentBlog.Store.ArticleOverviewCriteria.Action
 @using Fluxor
 @using Fluxor.Blazor.Web.Components
 @inject IState<PageState> PageState
+@inject IState<ArticleOverviewState> ArticleOverviewState
+@inject IState<ArticleOverviewCriteriaState> ArticleOverviewCriteriaState
 @inject IDispatcher Dispatcher
 @inherits FluxorComponent
 @page "/"
@@ -13,12 +18,12 @@
 <p>@PageState.Value.CurrentPage?.Tag</p>
 
 @code {
-	private PageData? data;
+	private PageData? page;
 
 	protected override void OnInitialized()
 	{
-		data = PageDataProvider.Datas[PageDataProvider.Home];
-		Dispatcher.Dispatch(new PageResetAction(data));
+		page = PageDataProvider.Datas[PageDataProvider.Home];
+		Dispatcher.Dispatch(new PageResetAction(page));
 
 		base.OnInitialized();
 	}
