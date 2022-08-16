@@ -17,13 +17,15 @@ namespace FluentBlog.Model.Article
 
 		public List<string>? CategoryChain { get; set; }
 
+		public ArticleSeries? Series { get; set; }
+
 		public List<string>? Tags { get; set; }
 
 		public DateTime EditTime { get; set; }
 
 		public string? Image { get; set; }
 
-		public ArticleOverviewData(string url, string title, string? description, List<string>? categoryChain, List<string>? tags, DateTime editTime, string? image)
+		public ArticleOverviewData(string url, string title, string? description, List<string>? categoryChain, List<string>? tags, DateTime editTime, string? image, ArticleSeries? series)
 		{
 			Url = url;
 			Title = title;
@@ -32,6 +34,7 @@ namespace FluentBlog.Model.Article
 			Tags = tags;
 			EditTime = editTime;
 			Image = image;
+			Series = series;
 		}
 	}
 }
