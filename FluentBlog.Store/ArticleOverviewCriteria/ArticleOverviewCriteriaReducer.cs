@@ -16,6 +16,7 @@ namespace FluentBlog.Store.ArticleOverviewCriteria
 			return state with
 			{
 				CategoryChain = action.CategoryChain,
+				Series = action.Series,
 				Tags = action.Tags,
 				From = action.From,
 				To = action.To

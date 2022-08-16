@@ -9,6 +9,6 @@ namespace FluentBlog.Store.ArticleOverview
 {
 	public record ArticleOverviewState
 	{
-		public List<ArticleOverviewData>? ArticleOverviews { get; set; }
+		public List<ArticleOverviewData>? ArticleOverviews { get; init; }
 	}
 }

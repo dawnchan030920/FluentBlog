@@ -56,6 +56,14 @@ namespace FluentBlog.Store.ArticleOverview
 					query = from overview in overviews
 							where ContainsCommonSubList(overview.CategoryChain, criteriaState.Value.CategoryChain)
 							select overview;
+					overviews.AsQueryable().ToList();
+				}
+				if (criteriaState.Value.Series is not null)
+				{
+					query = from overview in overviews
+							where overview.Series?.Series is not null && overview.Series.Series.Equals(criteriaState.Value.Series)
+							orderby overview.Series?.Number
+							select overview;
 				}
 
                 dispatcher.Dispatch(new ArticleOverviewSetAction(query?.ToList()));

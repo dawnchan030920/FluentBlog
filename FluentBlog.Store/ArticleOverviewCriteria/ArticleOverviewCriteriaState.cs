@@ -8,12 +8,14 @@ namespace FluentBlog.Store.ArticleOverviewCriteria
 {
 	public record ArticleOverviewCriteriaState
 	{
-		public List<string>? CategoryChain { get; set; }
+		public List<string>? CategoryChain { get; init; }
+
+		public string? Series { get; init; }
 		
-		public List<string>? Tags { get; set; }
+		public List<string>? Tags { get; init; }
 
-		public DateTime? From { get; set; }
+		public DateTime? From { get; init; }
 
-		public DateTime? To { get; set; }
+		public DateTime? To { get; init; }
 	}
 }
