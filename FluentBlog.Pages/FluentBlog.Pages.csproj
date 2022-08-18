@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FluentBlog.Components\FluentBlog.Components.csproj" />
     <ProjectReference Include="..\FluentBlog.Model\FluentBlog.Model.csproj" />
     <ProjectReference Include="..\FluentBlog.Service\FluentBlog.Service.csproj" />
     <ProjectReference Include="..\FluentBlog.Store\FluentBlog.Store.csproj" />

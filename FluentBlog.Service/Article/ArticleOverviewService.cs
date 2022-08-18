@@ -11,7 +11,10 @@ namespace FluentBlog.Service.Article
 	{
 		public static List<ArticleOverviewData>? ArticleOverviews
 		{
-			get => null;
+			get => new List<ArticleOverviewData>()
+			{
+				new ArticleOverviewData("/nouse","Test Article","test article", new List<string>(){ "Test","Service"},new List<string>(){"blazor","web"},DateTime.Now,"_content/FluentBlog.Asset/icon-192.png",new ArticleSeries("fb test",1,null))
+			};
 		}
 	}
 }

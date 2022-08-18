@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBlog.Store", "FluentB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBlog.Components", "FluentBlog.Components\FluentBlog.Components.csproj", "{5D6A6B36-B8D5-45AD-9179-1D202F087799}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentBlog.Asset", "FluentBlog.Asset\FluentBlog.Asset.csproj", "{368017A5-0E78-4007-954B-9E8943B70102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluentBlog.Asset", "FluentBlog.Asset\FluentBlog.Asset.csproj", "{368017A5-0E78-4007-954B-9E8943B70102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

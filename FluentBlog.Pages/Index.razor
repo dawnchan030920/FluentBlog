@@ -5,6 +5,7 @@
 @using FluentBlog.Store.ArticleOverview
 @using FluentBlog.Store.ArticleOverviewCriteria
 @using FluentBlog.Store.ArticleOverviewCriteria.Action
+@using FluentBlog.Components.ArticleOverview
 @using Microsoft.Fast.Components.FluentUI
 @using Fluxor
 @using Fluxor.Blazor.Web.Components
@@ -17,6 +18,17 @@
 
 <h3>Index</h3>
 <p>@PageState.Value.CurrentPage?.Tag</p>
+@if (ArticleOverviewState.Value.ArticleOverviews is not null)
+{
+	<ul>
+		@foreach (var overview in ArticleOverviewState.Value.ArticleOverviews)
+		{
+			<li>
+				<ArticleOverview Data="@overview" />
+			</li>
+		}
+	</ul>
+}
 
 @code {
 	private PageData? page;
