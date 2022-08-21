@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FluentBlog.Store.Page.Action
 {
-	public class DataClearAction
+	public class MainSubPageClearAction
 	{
 	}
 }

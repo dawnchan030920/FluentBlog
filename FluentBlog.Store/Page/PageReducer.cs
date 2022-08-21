@@ -30,7 +30,7 @@ namespace FluentBlog.Store.Page
 		}
 
 		[ReducerMethod]
-		public static PageState OnDataSet(PageState state, DataSetAction action)
+		public static PageState OnDataSet(PageState state, MainSubPageSetAction action)
 		{
 			return state with
 			{
@@ -39,7 +39,7 @@ namespace FluentBlog.Store.Page
 			};
 		}
 
-		[ReducerMethod(typeof(DataClearAction))]
+		[ReducerMethod(typeof(MainSubPageClearAction))]
 		public static PageState OnDataClear(PageState state)
 		{
 			return state with

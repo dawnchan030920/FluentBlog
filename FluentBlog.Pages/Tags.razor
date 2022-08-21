@@ -42,7 +42,7 @@
 		{
 			sub = new List<SubPageData>();
 			sub.Add(new SubPageData(Name, $"/tags/{Name}"));
-			Dispatcher.Dispatch(new DataSetAction(page, sub));
+			Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
 		}
 		else
 		{

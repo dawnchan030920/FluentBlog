@@ -1,0 +1,58 @@
+﻿@page "/category"
+@page "/category/{*categoryChainPrimitive}"
+@using Fluxor
+@using Fluxor.Blazor.Web.Components
+@inherits FluxorComponent
+@using FluentBlog.Model.Page
+@using FluentBlog.Service.Page
+@inject IDispatcher Dispatcher
+@using FluentBlog.Store.Page.Action
+@using FluentBlog.Store.Category
+@using FluentBlog.Store.Category.Action
+@inject IState<CategoryState> CategoryState
+@using Microsoft.Fast.Components.FluentUI
+
+@code {
+	private PageData? page = PageDataProvider.Datas[PageDataProvider.Category];
+	private List<SubPageData>? sub;
+
+	[Parameter]
+	public string? CategoryChainPrimitive { get; set; }
+
+	public List<string>? CategoryChain { get => CategoryChainPrimitive?.Split("/").ToList(); }
+
+	protected override void OnInitialized()
+	{
+		UpdatePageState();
+
+		base.OnInitialized();
+	}
+
+	protected override void OnParametersSet()
+	{
+		UpdatePageState();
+		
+		base.OnParametersSet();
+	}
+
+	private void UpdatePageState()
+	{
+		Dispatcher.Dispatch(new CategoryChainSetAction(CategoryChain));
+
+		if (CategoryChain is null || CategoryChain.All(s => s == string.Empty))
+		{
+			Dispatcher.Dispatch(new PageResetAction(page));
+		}
+		else
+		{
+			sub = new List<SubPageData>();
+			string baseUrl = "/category";
+			foreach (var category in CategoryChain)
+			{
+				baseUrl += $"/{category}";
+				sub.Add(new SubPageData(category, baseUrl));
+			}
+			Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
+		}
+	}
+}
