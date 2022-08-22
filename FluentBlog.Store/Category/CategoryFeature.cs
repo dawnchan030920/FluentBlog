@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fluxor;
-using FluentBlog.Service.Category;
+using FluentBlog.Model.Category;
 
 namespace FluentBlog.Store.Category
 {
@@ -16,8 +16,7 @@ namespace FluentBlog.Store.Category
         {
             return new CategoryState()
             {
-                UncategorizedArticles = null,
-                Categories = null
+                Category = null
             };
         }
     }

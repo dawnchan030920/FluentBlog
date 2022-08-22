@@ -1,0 +1,27 @@
+﻿@using Microsoft.Fast.Components.FluentUI
+@using FluentBlog.Model.Category
+@inject NavigationManager NavigationManager
+
+@if (CategoryData is not null)
+{
+	string relative = string.Empty;
+	foreach (var cateName in CategoryData.CategoryChain)
+	{
+		relative += $"/{cateName}";
+	}
+	<FluentAnchor Href="@($"/category{relative}")" style="width: 100%">
+		@if (CategoryData.Name is not null)
+		{
+			@CategoryData.Name
+		}
+		<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size16" Filled=false Slot="end" />
+		<div style="font-family: var(--body-font)" slot="end">@(CategoryData.SubCategories is null ? 0 : CategoryData.SubCategories.Count)</div>
+		<FluentIcon Name="@FluentIcons.DocumentText" Size="IconSize.Size16" Filled=false Slot="end" />
+		<div style="font-family: var(--body-font)" slot="end">@CategoryData.TotalArticleCount</div>
+	</FluentAnchor>
+}
+
+@code {
+	[Parameter]
+	public CategoryData? CategoryData { get; set; }
+}

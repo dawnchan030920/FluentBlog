@@ -8,11 +8,11 @@ namespace FluentBlog.Store.Category.Action
 {
     public class CategoryChainSetAction
     {
-        public List<string>? CurrentCategoryChain { get; set; }
+        public List<string> CategortChain { get; set; }
 
-        public CategoryChainSetAction(List<string>? currentCategoryChain)
+        public CategoryChainSetAction(List<string> categortChain)
         {
-            CurrentCategoryChain = currentCategoryChain;
+            CategortChain = categortChain;
         }
     }
 }

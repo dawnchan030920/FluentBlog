@@ -22,9 +22,9 @@ namespace FluentBlog.Store.ArticleOverview
 		}
 
 		[EffectMethod(typeof(ArticleOverviewCriteriaSetAction))]
-		public async Task UpdateOverviews(IDispatcher dispatcher)
+		public Task UpdateOverviews(IDispatcher dispatcher)
 		{
-			var overviews = ArticleOverviewService.ArticleOverviews;
+			var overviews = ArticleService.ArticleOverviews;
 			IEnumerable<ArticleOverviewData>? query = overviews;
             if (overviews is not null)
 			{
@@ -69,6 +69,7 @@ namespace FluentBlog.Store.ArticleOverview
                 dispatcher.Dispatch(new ArticleOverviewSetAction(query?.ToList()));
             }
 			else dispatcher.Dispatch(new ArticleOverviewSetAction(null));
+			return Task.CompletedTask;
 		}
 
 		private bool ContainsCommonSubList<T>(List<T>? super, List<T> sub)

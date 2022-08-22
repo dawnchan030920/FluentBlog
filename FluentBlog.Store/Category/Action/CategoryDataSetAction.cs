@@ -1,22 +1,19 @@
-﻿using System;
+﻿using FluentBlog.Model.Category;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FluentBlog.Model.Article;
 
 namespace FluentBlog.Store.Category.Action
 {
     public class CategoryDataSetAction
     {
-        public List<string>? Categories { get; set; }
+        public CategoryData? Category { get; set; }
 
-        public List<ArticleOverviewData>? UncategorizedArticles { get; set; }
-
-        public CategoryDataSetAction(List<string>? categories, List<ArticleOverviewData>? uncategorizedArticles)
+        public CategoryDataSetAction(CategoryData? category)
         {
-            Categories = categories;
-            UncategorizedArticles = uncategorizedArticles;
+            Category = category;
         }
     }
 }

@@ -4,39 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentBlog.Model.Article;
+using FluentBlog.Model.Category;
 using FluentBlog.Service.Article;
 
 namespace FluentBlog.Service.Category
 {
     public class CategoryHelper
     {
-        private List<ArticleOverviewData>? articleOverviews = ArticleOverviewService.ArticleOverviews;
+        private List<ArticleOverviewData>? articleOverviews = ArticleService.ArticleOverviews;
 
-        public void Categorize(out List<string>? subCategories, out List<ArticleOverviewData>? uncategorizedArticles, List<string>? currentCategory)
+        private CategoryData _categoryTree = new RootCategory("ROOT");
+
+        public CategoryData CategoryTree => _categoryTree;
+
+        public CategoryData? GetCategoryDataByCategoryChain(List<string>? chain)
         {
-            subCategories = null;
-            uncategorizedArticles = null;
+            if (chain is null || chain.Count == 0 || chain.All(s => s == string.Empty)) return CategoryTree;
+            else
+            {
+                CategoryData? currentCategory = CategoryTree;
+                foreach (var category in chain)
+                {
+                    currentCategory = currentCategory?[category];
+                    if (currentCategory is null) return null;
+                }
+                return currentCategory;
+            }
+        }
 
-            currentCategory ??= new List<string>();
-
+        public CategoryHelper()
+        {
             if (articleOverviews is not null)
             {
                 foreach (var overview in articleOverviews)
                 {
-                    if (overview.CategoryChain is not null && overview.CategoryChain.Take(currentCategory.Count).SequenceEqual(currentCategory))
+                    CategoryData currentCategory = _categoryTree;
+                    currentCategory.TotalArticleCount++;
+                    if (overview.CategoryChain is null)
                     {
-                        // Same length -> uncategorized article.
-                        if (overview.CategoryChain.Count == currentCategory.Count)
+                        (currentCategory.Articles ??= new List<ArticleOverviewData>()).Add(overview);
+                    }
+                    else
+                    {
+                        foreach (var category in overview.CategoryChain)
                         {
-                            uncategorizedArticles ??= new List<ArticleOverviewData>();
-                            uncategorizedArticles.Add(overview);
+                            var newCate = currentCategory[category] is not null ? currentCategory[category] : new CategoryData(category, currentCategory);
+                            currentCategory.AddSubCategory(newCate);
+                            currentCategory = newCate;
+                            currentCategory.TotalArticleCount++;
                         }
-                        // Different length --(overview's category is longer)-> sub category exist.
-                        else
-                        {
-                            subCategories ??= new List<string>();
-                            subCategories.Add(overview.CategoryChain.Skip(currentCategory.Count).ToList()[0]);
-                        }
+                        (currentCategory.Articles ??= new List<ArticleOverviewData>()).Add(overview);
                     }
                 }
             }

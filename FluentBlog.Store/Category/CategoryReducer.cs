@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FluentBlog.Store.Category.Action;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fluxor;
-using FluentBlog.Store.Category.Action;
 
 namespace FluentBlog.Store.Category
 {
@@ -15,8 +15,7 @@ namespace FluentBlog.Store.Category
         {
             return state with
             {
-                Categories = action.Categories,
-                UncategorizedArticles = action.UncategorizedArticles
+                Category = action.Category
             };
         }
     }

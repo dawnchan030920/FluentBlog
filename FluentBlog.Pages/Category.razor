@@ -11,6 +11,42 @@
 @using FluentBlog.Store.Category.Action
 @inject IState<CategoryState> CategoryState
 @using Microsoft.Fast.Components.FluentUI
+@using FluentBlog.Components.Category
+@using FluentBlog.Components.ArticleOverview
+
+@if (CategoryState.Value.Category is null)
+{
+	<h3>Sorry there's no such category.</h3>
+}
+else
+{
+	<FluentTabs>
+		<FluentTab>Articles</FluentTab>
+		<FluentTab>Categories</FluentTab>
+		<FluentTabPanel>
+			@if (CategoryState.Value.Category.Articles is not null)
+			{
+				<ul>
+					@foreach (var article in CategoryState.Value.Category.Articles)
+					{
+						<li>
+							<ArticleOverview Data="@article" />
+						</li>
+					}
+				</ul>
+			}
+		</FluentTabPanel>
+		<FluentTabPanel>
+			@if (CategoryState.Value.Category.SubCategories is not null)
+			{
+				@foreach (var category in CategoryState.Value.Category.SubCategories)
+				{
+					<FluentBlog.Components.Category.Category CategoryData="@category"/> 
+				}
+			}
+		</FluentTabPanel>
+	</FluentTabs>
+}
 
 @code {
 	private PageData? page = PageDataProvider.Datas[PageDataProvider.Category];
@@ -31,20 +67,20 @@
 	protected override void OnParametersSet()
 	{
 		UpdatePageState();
-		
+
 		base.OnParametersSet();
 	}
 
 	private void UpdatePageState()
 	{
-		Dispatcher.Dispatch(new CategoryChainSetAction(CategoryChain));
-
 		if (CategoryChain is null || CategoryChain.All(s => s == string.Empty))
 		{
+			Dispatcher.Dispatch(new CategoryChainClearAction());
 			Dispatcher.Dispatch(new PageResetAction(page));
 		}
 		else
 		{
+			Dispatcher.Dispatch(new CategoryChainSetAction(CategoryChain));
 			sub = new List<SubPageData>();
 			string baseUrl = "/category";
 			foreach (var category in CategoryChain)

@@ -17,7 +17,7 @@ namespace FluentBlog.Store.ArticleOverview
 		{
 			return new ArticleOverviewState()
 			{
-				ArticleOverviews = ArticleOverviewService.ArticleOverviews
+				ArticleOverviews = ArticleService.ArticleOverviews
 			};
 		}
 	}

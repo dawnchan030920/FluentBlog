@@ -16,9 +16,11 @@
 					}
 					else
 					{
+						string url = "/category";
 						@foreach (var category in Data.CategoryChain)
 						{
-							<FluentBreadcrumbItem style="color: var(--neutral-foreground-hint);">
+							url += $"/{category}";
+							<FluentBreadcrumbItem style="color: var(--neutral-foreground-hint);" Href="@url">
 								<span>@(category.ToUpper())</span>
 							</FluentBreadcrumbItem>
 						}

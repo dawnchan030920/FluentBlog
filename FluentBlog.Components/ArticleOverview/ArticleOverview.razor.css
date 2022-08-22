@@ -25,6 +25,8 @@
 
 .text {
     grid-row: 1;
+    line-height: var(--bs-body-line-height);
+    font-size: var(--bs-body-font-size);
 }
 
 .title {

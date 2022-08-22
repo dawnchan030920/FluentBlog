@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Fluxor;
 using FluentBlog.Service.Category;
 using FluentBlog.Store.Category.Action;
-using FluentBlog.Model.Article;
+using Fluxor;
 
 namespace FluentBlog.Store.Category
 {
@@ -20,13 +19,19 @@ namespace FluentBlog.Store.Category
         }
 
         [EffectMethod]
-        public async Task OnCategoryChainSet(CategoryChainSetAction action, IDispatcher dispatcher)
+        public Task OnCategoryChainSet(CategoryChainSetAction action, IDispatcher dispatcher)
         {
-            List<string>? subCategories;
-            List<ArticleOverviewData>? uncategorizedArticles;
-            categoryHelper.Categorize(out subCategories, out uncategorizedArticles, action.CurrentCategoryChain);
+            var category = categoryHelper.GetCategoryDataByCategoryChain(action.CategortChain);
+            dispatcher.Dispatch(new CategoryDataSetAction(category));
+            return Task.CompletedTask;
+        }
 
-            dispatcher.Dispatch(new CategoryDataSetAction(subCategories, uncategorizedArticles));
+        [EffectMethod(typeof(CategoryChainClearAction))]
+        public Task OnCategoryChainClear(IDispatcher dispatcher)
+        {
+            var category = categoryHelper.GetCategoryDataByCategoryChain(null);
+            dispatcher.Dispatch(new CategoryDataSetAction(category));
+            return Task.CompletedTask;
         }
     }
 }
