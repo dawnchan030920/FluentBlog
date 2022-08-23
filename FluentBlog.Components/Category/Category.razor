@@ -1,27 +1,76 @@
 ﻿@using Microsoft.Fast.Components.FluentUI
 @using FluentBlog.Model.Category
+@using FluentBlog.Service.Category
 @inject NavigationManager NavigationManager
 
 @if (CategoryData is not null)
 {
-	string relative = string.Empty;
-	foreach (var cateName in CategoryData.CategoryChain)
-	{
-		relative += $"/{cateName}";
-	}
-	<FluentAnchor Href="@($"/category{relative}")" style="width: 100%">
-		@if (CategoryData.Name is not null)
-		{
-			@CategoryData.Name
-		}
-		<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size16" Filled=false Slot="end" />
-		<div style="font-family: var(--body-font)" slot="end">@(CategoryData.SubCategories is null ? 0 : CategoryData.SubCategories.Count)</div>
-		<FluentIcon Name="@FluentIcons.DocumentText" Size="IconSize.Size16" Filled=false Slot="end" />
-		<div style="font-family: var(--body-font)" slot="end">@CategoryData.TotalArticleCount</div>
-	</FluentAnchor>
+	<FluentCard style="display: grid; grid-template-columns: 1fr auto;">
+		<div style="margin-left: 12px; grid-column: 1; display: flex; align-items: center;">
+			<a href="@url" class="category-name" @onclick="OnTabDefaultCallback">
+				@CategoryData.Name
+			</a>
+		</div>
+		<div style="grid-column: 2; display: flex; justify-content: end; align-items: center;">
+			@if (CategoryData.SubCategories is not null)
+			{
+				<FluentButton style="margin-right: 4px;" @onclick="DetermineTabToCategory">
+					<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size20" Slot="start" Filled=true />
+					@CategoryData.SubCategories.Count
+				</FluentButton>
+			}
+			@if (CategoryData.Articles is not null)
+			{
+				<FluentButton style="margin-right: 4px;" @onclick="DetermineTabToArticle">
+					<FluentIcon Name="@FluentIcons.Document" Size="IconSize.Size20" Slot="start" Filled=false />
+					@CategoryData.Articles.Count
+				</FluentButton>
+			}
+			<FluentAnchor style="margin-right: 4px;">
+				<FluentIcon Name="@FluentIcons.DocumentMultiple" Size="IconSize.Size20" Slot="start" Filled=true />
+				@CategoryData.TotalArticleCount
+			</FluentAnchor>
+		</div>
+	</FluentCard>
 }
 
 @code {
 	[Parameter]
 	public CategoryData? CategoryData { get; set; }
+
+	[Parameter]
+	public EventCallback<string> OnTabDeterminedCallback { get; set; }
+
+	[Parameter]
+	public EventCallback OnTabDefaultCallback { get; set; }
+
+	private string url = "/category";
+
+	private void DetermineTab(string tabId)
+	{
+		if (OnTabDeterminedCallback.HasDelegate)
+		{
+			OnTabDeterminedCallback.InvokeAsync(tabId);
+		}
+		NavigationManager.NavigateTo(url);
+	}
+
+	private void DetermineTabToCategory() => DetermineTab(CategoryTabProvider.CategoryPanelId);
+
+	private void DetermineTabToArticle() => DetermineTab(CategoryTabProvider.ArticlePanelId);
+
+	protected override void OnParametersSet()
+	{
+		url = "/category";
+
+		if (CategoryData is not null && CategoryData.CategoryChain is not null)
+		{
+			foreach (var cateName in CategoryData.CategoryChain)
+			{
+				url += $"/{cateName}";
+			}
+		}
+
+		base.OnParametersSet();
+	}
 }

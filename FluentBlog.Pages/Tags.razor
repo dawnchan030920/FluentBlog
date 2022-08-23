@@ -15,7 +15,7 @@
 <p>@Name</p>
 
 @code {
-	private PageData? page;
+	private PageData? page = PageDataProvider.Datas[PageDataProvider.Tags];
 	private List<SubPageData>? sub;
 
 	[Parameter]
@@ -23,9 +23,6 @@
 
 	protected override void OnInitialized()
 	{
-		page = PageDataProvider.Datas[PageDataProvider.Tags];
-		UpdatePageState();
-
 		base.OnInitialized();
 	}
 

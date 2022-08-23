@@ -5,6 +5,7 @@
 @inherits FluxorComponent
 @using FluentBlog.Model.Page
 @using FluentBlog.Service.Page
+@using FluentBlog.Service.Category
 @inject IDispatcher Dispatcher
 @using FluentBlog.Store.Page.Action
 @using FluentBlog.Store.Category
@@ -14,81 +15,113 @@
 @using FluentBlog.Components.Category
 @using FluentBlog.Components.ArticleOverview
 
-@if (CategoryState.Value.Category is null)
-{
-	<h3>Sorry there's no such category.</h3>
-}
-else
-{
-	<FluentTabs>
-		<FluentTab>Articles</FluentTab>
-		<FluentTab>Categories</FluentTab>
-		<FluentTabPanel>
-			@if (CategoryState.Value.Category.Articles is not null)
-			{
-				<ul>
+<div>
+	@if (CategoryState.Value.Category is null)
+	{
+		<h3>Sorry there's no such category.</h3>
+	}
+	else
+	{
+        <FluentTabs ActiveId="@ActiveId">
+            <FluentTab id="@CategoryTabProvider.ArticlePanelId">Articles</FluentTab>
+            <FluentTab id="@CategoryTabProvider.CategoryPanelId">Categories</FluentTab>
+			<FluentTabPanel>
+				@if (CategoryState.Value.Category?.Articles is not null)
+				{
 					@foreach (var article in CategoryState.Value.Category.Articles)
 					{
-						<li>
-							<ArticleOverview Data="@article" />
-						</li>
+						<ArticleOverview Data="@article" />
 					}
-				</ul>
-			}
-		</FluentTabPanel>
-		<FluentTabPanel>
-			@if (CategoryState.Value.Category.SubCategories is not null)
-			{
-				@foreach (var category in CategoryState.Value.Category.SubCategories)
-				{
-					<FluentBlog.Components.Category.Category CategoryData="@category"/> 
 				}
-			}
-		</FluentTabPanel>
-	</FluentTabs>
-}
+			</FluentTabPanel>
+			<FluentTabPanel>
+				@if (CategoryState.Value.Category?.SubCategories is not null)
+				{
+					@foreach (var category in CategoryState.Value.Category.SubCategories)
+					{
+						<FluentBlog.Components.Category.Category CategoryData="@category" OnTabDeterminedCallback="TabDeterminedByForce" OnTabDefaultCallback="TabDeterminedDefault" />
+					}
+				}
+			</FluentTabPanel>
+		</FluentTabs>
+	}
+</div>
 
 @code {
-	private PageData? page = PageDataProvider.Datas[PageDataProvider.Category];
-	private List<SubPageData>? sub;
+    public FluentTabs? tab { get; set; }
 
-	[Parameter]
-	public string? CategoryChainPrimitive { get; set; }
+    private PageData? page = PageDataProvider.Datas[PageDataProvider.Category];
+    private List<SubPageData>? sub;
 
-	public List<string>? CategoryChain { get => CategoryChainPrimitive?.Split("/").ToList(); }
+    [Parameter]
+    public string? CategoryChainPrimitive { get; set; }
 
-	protected override void OnInitialized()
-	{
-		UpdatePageState();
+    public List<string>? CategoryChain { get => CategoryChainPrimitive?.Split("/").ToList(); }
 
-		base.OnInitialized();
-	}
+    protected override void OnInitialized()
+    {
+        ActiveIdGetter = GetActiveIdByNullJudge;
 
-	protected override void OnParametersSet()
-	{
-		UpdatePageState();
+        base.OnInitialized();
+    }
 
-		base.OnParametersSet();
-	}
+    protected override void OnParametersSet()
+    {
+        UpdatePageState();
 
-	private void UpdatePageState()
-	{
-		if (CategoryChain is null || CategoryChain.All(s => s == string.Empty))
-		{
-			Dispatcher.Dispatch(new CategoryChainClearAction());
-			Dispatcher.Dispatch(new PageResetAction(page));
-		}
-		else
-		{
-			Dispatcher.Dispatch(new CategoryChainSetAction(CategoryChain));
-			sub = new List<SubPageData>();
-			string baseUrl = "/category";
-			foreach (var category in CategoryChain)
-			{
-				baseUrl += $"/{category}";
-				sub.Add(new SubPageData(category, baseUrl));
-			}
-			Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
-		}
-	}
+        base.OnParametersSet();
+    }
+
+    private void UpdatePageState()
+    {
+        if (CategoryChain is null || CategoryChain.All(s => s == string.Empty))
+        {
+            Dispatcher.Dispatch(new CategoryChainClearAction());
+            Dispatcher.Dispatch(new PageResetAction(page));
+        }
+        else
+        {
+            Dispatcher.Dispatch(new CategoryChainSetAction(CategoryChain));
+            sub = new List<SubPageData>();
+            string baseUrl = "/category";
+            foreach (var category in CategoryChain)
+            {
+                baseUrl += $"/{category}";
+                sub.Add(new SubPageData(category, baseUrl));
+            }
+            Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
+        }
+    }
+
+    [Parameter]
+    public string? ActiveId
+    {
+        get
+        {
+            string? result = ActiveIdGetter?.Invoke();
+            return result;
+        }
+        set { }
+    }
+
+    private void TabDeterminedByForce(string tabId)
+    {
+        determinedTab = tabId;
+        ActiveIdGetter = GetActiveIdByDetermination;
+    }
+
+    private void TabDeterminedDefault()
+    {
+        ActiveIdGetter = GetActiveIdByNullJudge;
+    }
+
+    private delegate string GetActiveId();
+
+    private GetActiveId? ActiveIdGetter;
+
+    private string determinedTab = CategoryTabProvider.CategoryPanelId;
+
+    private string GetActiveIdByNullJudge() => CategoryState?.Value?.Category?.SubCategories is null ? CategoryTabProvider.ArticlePanelId : CategoryTabProvider.CategoryPanelId;
+
+    private string GetActiveIdByDetermination() => determinedTab;
 }

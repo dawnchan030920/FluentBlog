@@ -1,0 +1,10 @@
+﻿.category-name {
+    font-size: var(--type-ramp-plus-5-font-size);
+    line-height: var(--bs-body-line-height);
+    color: var(--accent-foreground-active);
+    text-decoration: none;
+}
+    .category-name:hover {
+        color: var(--accent-foreground-hover);
+        text-decoration: underline;
+    }
