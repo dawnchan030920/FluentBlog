@@ -10,7 +10,10 @@
 @using FluentBlog.Store.Page.Action
 @using FluentBlog.Store.Category
 @using FluentBlog.Store.Category.Action
+@using FluentBlog.Store.CategoryTab
+@using FluentBlog.Store.CategoryTab.Action
 @inject IState<CategoryState> CategoryState
+@inject IState<CategoryTabState> CategoryTabState
 @using Microsoft.Fast.Components.FluentUI
 @using FluentBlog.Components.Category
 @using FluentBlog.Components.ArticleOverview
@@ -22,7 +25,7 @@
 	}
 	else
 	{
-        <FluentTabs ActiveId="@ActiveId">
+        <FluentTabs ActiveId="@CategoryTabState.Value.TabActiveId">
             <FluentTab id="@CategoryTabProvider.ArticlePanelId">Articles</FluentTab>
             <FluentTab id="@CategoryTabProvider.CategoryPanelId">Categories</FluentTab>
 			<FluentTabPanel>
@@ -39,7 +42,7 @@
 				{
 					@foreach (var category in CategoryState.Value.Category.SubCategories)
 					{
-						<FluentBlog.Components.Category.Category CategoryData="@category" OnTabDeterminedCallback="TabDeterminedByForce" OnTabDefaultCallback="TabDeterminedDefault" />
+						<FluentBlog.Components.Category.Category CategoryData="@category" />
 					}
 				}
 			</FluentTabPanel>
@@ -60,14 +63,21 @@
 
     protected override void OnInitialized()
     {
-        ActiveIdGetter = GetActiveIdByNullJudge;
-
         base.OnInitialized();
     }
 
     protected override void OnParametersSet()
     {
         UpdatePageState();
+
+        if (!CategoryTabState.Value.ByForce)
+        {
+            Dispatcher.Dispatch(new CategoryTabSetAction(CategoryState.Value.Category?.SubCategories is null ? CategoryTabProvider.ArticlePanelId : CategoryTabProvider.CategoryPanelId));
+        }
+        else
+        {
+            CategoryTabState.Value.ByForce = false;
+        }
 
         base.OnParametersSet();
     }
@@ -92,36 +102,4 @@
             Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
         }
     }
-
-    [Parameter]
-    public string? ActiveId
-    {
-        get
-        {
-            string? result = ActiveIdGetter?.Invoke();
-            return result;
-        }
-        set { }
-    }
-
-    private void TabDeterminedByForce(string tabId)
-    {
-        determinedTab = tabId;
-        ActiveIdGetter = GetActiveIdByDetermination;
-    }
-
-    private void TabDeterminedDefault()
-    {
-        ActiveIdGetter = GetActiveIdByNullJudge;
-    }
-
-    private delegate string GetActiveId();
-
-    private GetActiveId? ActiveIdGetter;
-
-    private string determinedTab = CategoryTabProvider.CategoryPanelId;
-
-    private string GetActiveIdByNullJudge() => CategoryState?.Value?.Category?.SubCategories is null ? CategoryTabProvider.ArticlePanelId : CategoryTabProvider.CategoryPanelId;
-
-    private string GetActiveIdByDetermination() => determinedTab;
 }

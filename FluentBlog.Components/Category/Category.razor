@@ -1,13 +1,16 @@
 ﻿@using Microsoft.Fast.Components.FluentUI
 @using FluentBlog.Model.Category
 @using FluentBlog.Service.Category
+@using Fluxor
+@using FluentBlog.Store.CategoryTab.Action
+@inject IDispatcher Dispatcher
 @inject NavigationManager NavigationManager
 
 @if (CategoryData is not null)
 {
 	<FluentCard style="display: grid; grid-template-columns: 1fr auto;">
 		<div style="margin-left: 12px; grid-column: 1; display: flex; align-items: center;">
-			<a href="@url" class="category-name" @onclick="OnTabDefaultCallback">
+			<a href="@url" class="category-name">
 				@CategoryData.Name
 			</a>
 		</div>
@@ -38,26 +41,17 @@
 	[Parameter]
 	public CategoryData? CategoryData { get; set; }
 
-	[Parameter]
-	public EventCallback<string> OnTabDeterminedCallback { get; set; }
-
-	[Parameter]
-	public EventCallback OnTabDefaultCallback { get; set; }
-
 	private string url = "/category";
-
-	private void DetermineTab(string tabId)
-	{
-		if (OnTabDeterminedCallback.HasDelegate)
-		{
-			OnTabDeterminedCallback.InvokeAsync(tabId);
-		}
-		NavigationManager.NavigateTo(url);
-	}
 
 	private void DetermineTabToCategory() => DetermineTab(CategoryTabProvider.CategoryPanelId);
 
 	private void DetermineTabToArticle() => DetermineTab(CategoryTabProvider.ArticlePanelId);
+
+	private void DetermineTab(string id)
+	{
+		Dispatcher.Dispatch(new CategoryTabSetByForceAction(id));
+		NavigationManager.NavigateTo(url);
+	}
 
 	protected override void OnParametersSet()
 	{
