@@ -18,7 +18,7 @@
 			@if (CategoryData.SubCategories is not null)
 			{
 				<FluentButton style="margin-right: 4px;" @onclick="DetermineTabToCategory">
-					<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size20" Slot="start" Filled=true />
+					<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size20" Slot="start" Filled=false />
 					@CategoryData.SubCategories.Count
 				</FluentButton>
 			}
@@ -29,7 +29,7 @@
 					@CategoryData.Articles.Count
 				</FluentButton>
 			}
-			<FluentAnchor style="margin-right: 4px;">
+			<FluentAnchor style="margin-right: 4px;" Appearance="Appearance.Stealth">
 				<FluentIcon Name="@FluentIcons.DocumentMultiple" Size="IconSize.Size20" Slot="start" Filled=true />
 				@CategoryData.TotalArticleCount
 			</FluentAnchor>
