@@ -16,11 +16,9 @@
 @inherits FluxorComponent
 @page "/"
 
-<h3>Index</h3>
-<p>@PageState.Value.CurrentPage?.Tag</p>
 @if (ArticleOverviewState.Value.ArticleOverviews is not null)
 {
-	<ul>
+	<ul class="article-list">
 		@foreach (var overview in ArticleOverviewState.Value.ArticleOverviews)
 		{
 			<li>

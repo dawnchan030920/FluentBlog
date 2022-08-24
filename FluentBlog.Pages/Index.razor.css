@@ -1,0 +1,8 @@
+﻿.article-list {
+    list-style-type: none;
+    padding: 0px 16px;
+}
+
+  .article-list > li ::deep {
+      padding: 12px 0px;
+  }
