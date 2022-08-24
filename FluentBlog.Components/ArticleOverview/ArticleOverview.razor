@@ -4,81 +4,83 @@
 
 @if (Data is not null)
 {
-	<FluentCard>
-		<div class="article-overview">
-			<div class="header">
-				<FluentBreadcrumb style="font-size: var(--type-ramp-minus-1-font-size); letter-spacing: 0.4em">
-					@if (Data.CategoryChain is null)
-					{
-						<FluentBreadcrumbItem style="color: var(--neutral-foreground-hint);">
-							<span>OTHER</span>
-						</FluentBreadcrumbItem>
-					}
-					else
-					{
-						string url = "/category";
-						@foreach (var category in Data.CategoryChain)
+	<div>
+		<FluentCard class="container">
+			<div class="article-overview">
+				<div class="header">
+					<FluentBreadcrumb style="font-size: var(--type-ramp-minus-1-font-size); letter-spacing: 0.4em">
+						@if (Data.CategoryChain is null)
 						{
-							url += $"/{category}";
-							<FluentBreadcrumbItem style="color: var(--neutral-foreground-hint);" Href="@url">
-								<span>@(category.ToUpper())</span>
+							<FluentBreadcrumbItem style="color: var(--neutral-foreground-hint);">
+								<span>OTHER</span>
 							</FluentBreadcrumbItem>
 						}
-					}
-				</FluentBreadcrumb>
-			</div>
-			<FluentDivider style="grid-column: 1 / span 2; grid-row: 2;" />
-			<div class="intro">
-				<div class="text">
-					<a class="title">
-						@((MarkupString)Data.Title)
-					</a>
-					@if (Data.Description is not null)
-					{
-						<p class="description">@((MarkupString)Data.Description)</p>
-					}
+						else
+						{
+							string url = "/category";
+							@foreach (var category in Data.CategoryChain)
+							{
+								url += $"/{category}";
+								<FluentBreadcrumbItem style="color: var(--neutral-foreground-hint);" Href="@url">
+									<span>@(category.ToUpper())</span>
+								</FluentBreadcrumbItem>
+							}
+						}
+					</FluentBreadcrumb>
 				</div>
+				<FluentDivider style="grid-column: 1 / span 2; grid-row: 2;" />
+				<div class="intro">
+					<div class="text">
+						<a class="title">
+							@((MarkupString)Data.Title)
+						</a>
+						@if (Data.Description is not null)
+						{
+							<p class="description">@((MarkupString)Data.Description)</p>
+						}
+					</div>
 				
-				<div class="operation">
-					<FluentAnchor Appearance="Appearance.Accent">
-						@Configuration["LearnMore"]
-					</FluentAnchor>
+					<div class="operation">
+						<FluentAnchor Appearance="Appearance.Accent">
+							@Configuration["LearnMore"]
+						</FluentAnchor>
+					</div>
 				</div>
-			</div>
-			@if (Data.Image is not null)
-			{
-				<div class="img">
-					<FluentCard style="display: flex; align-items: center;">
-						<img src="@Data.Image" />
-					</FluentCard>
-				</div>
-			}
-			<FluentDivider style="grid-column: 1 / span 2; grid-row: 4;" />
-			<div class="footer">
-				<FluentIcon Name="@FluentIcons.Clock" Filled=false Size="IconSize.Size24" />
-				<FluentAnchor style="margin-left: 3px; margin-right: 8px;">
-					@Data.EditTime
-				</FluentAnchor>
-				@if (Data.Series is not null)
+				@if (Data.Image is not null)
 				{
-					<FluentIcon Name="@FluentIcons.ReadingList" Filled=false Size="IconSize.Size24" />
-					<FluentAnchor style="margin-left: 3px; margin-right: 8px;">
-						@($"{Data.Series.Series} ({Data.Series.Number})")
-					</FluentAnchor>
+					<div class="img">
+						<FluentCard style="display: flex; align-items: center;">
+							<img src="@Data.Image" />
+						</FluentCard>
+					</div>
 				}
-				@if (Data.Tags is not null)
-				{
-					<FluentIcon Name="@FluentIcons.Tag" Filled=false Size="IconSize.Size24" />
-					@foreach (var tag in Data.Tags)
+				<FluentDivider style="grid-column: 1 / span 2; grid-row: 4;" />
+				<div class="footer">
+					<FluentIcon Name="@FluentIcons.Clock" Filled=false Size="IconSize.Size24" />
+					<FluentAnchor style="margin-left: 3px; margin-right: 8px;">
+						@Data.EditTime
+					</FluentAnchor>
+					@if (Data.Series is not null)
 					{
-						<FluentAnchor Appearance="Appearance.Neutral" Href="@($"/tags/{tag}")" style="margin-left: 3px;">
-							@tag
+						<FluentIcon Name="@FluentIcons.ReadingList" Filled=false Size="IconSize.Size24" />
+						<FluentAnchor style="margin-left: 3px; margin-right: 8px;">
+							@($"{Data.Series.Series} ({Data.Series.Number})")
 						</FluentAnchor>
 					}
-				}
+					@if (Data.Tags is not null)
+					{
+						<FluentIcon Name="@FluentIcons.Tag" Filled=false Size="IconSize.Size24" />
+						@foreach (var tag in Data.Tags)
+						{
+							<FluentAnchor Appearance="Appearance.Neutral" Href="@($"/tags/{tag}")" style="margin-left: 3px;">
+								@tag
+							</FluentAnchor>
+						}
+					}
+				</div>
 			</div>
-		</div>
-	</FluentCard>
+		</FluentCard>
+	</div>
 }
 
 @code {

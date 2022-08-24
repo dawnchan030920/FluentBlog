@@ -8,33 +8,35 @@
 
 @if (CategoryData is not null)
 {
-	<FluentCard style="display: grid; grid-template-columns: 1fr auto;">
-		<div style="margin-left: 12px; grid-column: 1; display: flex; align-items: center;">
-			<a href="@url" class="category-name">
-				@CategoryData.Name
-			</a>
-		</div>
-		<div style="grid-column: 2; display: flex; justify-content: end; align-items: center;">
-			@if (CategoryData.SubCategories is not null)
-			{
-				<FluentButton style="margin-right: 4px;" @onclick="DetermineTabToCategory">
-					<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size20" Slot="start" Filled=false />
-					@CategoryData.SubCategories.Count
-				</FluentButton>
-			}
-			@if (CategoryData.Articles is not null)
-			{
-				<FluentButton style="margin-right: 4px;" @onclick="DetermineTabToArticle">
-					<FluentIcon Name="@FluentIcons.Document" Size="IconSize.Size20" Slot="start" Filled=false />
-					@CategoryData.Articles.Count
-				</FluentButton>
-			}
-			<FluentAnchor style="margin-right: 4px;" Appearance="Appearance.Stealth">
-				<FluentIcon Name="@FluentIcons.DocumentMultiple" Size="IconSize.Size20" Slot="start" Filled=true />
-				@CategoryData.TotalArticleCount
-			</FluentAnchor>
-		</div>
-	</FluentCard>
+	<div>
+		<FluentCard style="display: grid; grid-template-columns: 1fr auto;" class="container">
+			<div style="margin-left: 12px; grid-column: 1; display: flex; align-items: center;">
+				<a href="@url" class="category-name">
+					@CategoryData.Name
+				</a>
+			</div>
+			<div style="grid-column: 2; display: flex; justify-content: end; align-items: center;">
+				@if (CategoryData.SubCategories is not null)
+				{
+					<FluentButton style="margin-right: 4px;" @onclick="DetermineTabToCategory">
+						<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size20" Slot="start" Filled=false />
+						@CategoryData.SubCategories.Count
+					</FluentButton>
+				}
+				@if (CategoryData.Articles is not null)
+				{
+					<FluentButton style="margin-right: 4px;" @onclick="DetermineTabToArticle">
+						<FluentIcon Name="@FluentIcons.Document" Size="IconSize.Size20" Slot="start" Filled=false />
+						@CategoryData.Articles.Count
+					</FluentButton>
+				}
+				<FluentAnchor style="margin-right: 4px;" Appearance="Appearance.Stealth">
+					<FluentIcon Name="@FluentIcons.DocumentMultiple" Size="IconSize.Size20" Slot="start" Filled=true />
+					@CategoryData.TotalArticleCount
+				</FluentAnchor>
+			</div>
+		</FluentCard>
+	</div>
 }
 
 @code {

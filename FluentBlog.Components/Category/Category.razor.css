@@ -1,4 +1,13 @@
-﻿.category-name {
+﻿::deep .container {
+    transition: all 0.25s ease-out 0s;
+}
+
+  ::deep .container:hover {
+      transform: translate3d(0px, -1px, 0px);
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 18px, rgba(0, 0, 0, 0.18) 0px 4px 11px;
+  }
+
+.category-name {
     font-size: var(--type-ramp-plus-5-font-size);
     line-height: var(--bs-body-line-height);
     color: var(--accent-foreground-active);
