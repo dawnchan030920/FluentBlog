@@ -31,19 +31,27 @@
 			<FluentTabPanel>
 				@if (CategoryState.Value.Category?.Articles is not null)
 				{
-					@foreach (var article in CategoryState.Value.Category.Articles)
-					{
-						<ArticleOverview Data="@article" />
-					}
+                    <ul class="article-list">
+					    @foreach (var article in CategoryState.Value.Category.Articles)
+					    {
+                            <li>
+                                <ArticleOverview Data="@article" />
+                            </li>
+					    }
+                    </ul>
 				}
 			</FluentTabPanel>
 			<FluentTabPanel>
 				@if (CategoryState.Value.Category?.SubCategories is not null)
 				{
-					@foreach (var category in CategoryState.Value.Category.SubCategories)
-					{
-						<FluentBlog.Components.Category.Category CategoryData="@category" />
-					}
+                    <ul class="category-list">
+                        @foreach (var category in CategoryState.Value.Category.SubCategories)
+					    {
+                            <li>
+                                <FluentBlog.Components.Category.Category CategoryData="@category" />
+                            </li>
+					    }
+                    </ul>
 				}
 			</FluentTabPanel>
 		</FluentTabs>

@@ -1,3 +1,21 @@
 ﻿::deep fluent-tabs::part(tablist) {
     justify-self: center;
 }
+
+.article-list {
+    list-style-type: none;
+    padding: 0px 16px;
+}
+
+  .article-list > li ::deep {
+      padding: 12px 0px;
+  }
+
+.category-list {
+    list-style-type: none;
+    padding: 0px 16px;
+}
+
+  .category-list > li ::deep {
+      padding: 6px 0px;
+  }
