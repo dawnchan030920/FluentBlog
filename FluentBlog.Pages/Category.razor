@@ -26,8 +26,8 @@
 	else
 	{
         <FluentTabs ActiveId="@CategoryTabState.Value.TabActiveId">
-            <FluentTab id="@CategoryTabProvider.ArticlePanelId">Articles</FluentTab>
-            <FluentTab id="@CategoryTabProvider.CategoryPanelId">Categories</FluentTab>
+            <FluentTab id="@CategoryTabProvider.ArticlePanelId" @onclick="@(() => OverrideTabActiveId(CategoryTabProvider.ArticlePanelId))">Articles</FluentTab>
+            <FluentTab id="@CategoryTabProvider.CategoryPanelId" @onclick="@(() => OverrideTabActiveId(CategoryTabProvider.CategoryPanelId))">Categories</FluentTab>
 			<FluentTabPanel>
 				@if (CategoryState.Value.Category?.Articles is not null)
 				{
@@ -110,4 +110,6 @@
             Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
         }
     }
+
+    private void OverrideTabActiveId(string id) => Dispatcher.Dispatch(new CategoryTabSetAction(id));
 }
