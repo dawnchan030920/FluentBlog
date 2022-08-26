@@ -2,10 +2,10 @@
     transition: all 0.333s ease-out 0s;
 }
 
-  ::deep .container:hover {
-      transform: translate3d(0px, -1px, 0px);
-      box-shadow: rgba(0, 0, 0, 0.15) 0px 18px 43px, rgba(0, 0, 0, 0.18) 0px 4px 11px;
-  }
+    ::deep .container:hover {
+        transform: translate3d(0px, -1px, 0px);
+        box-shadow: var(--elevation-shadow-card-hover);
+    }
 
 .article-overview {
     display: grid;

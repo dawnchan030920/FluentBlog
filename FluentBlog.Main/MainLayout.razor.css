@@ -1,18 +1,20 @@
 ﻿.top {
     width: 100%;
+    height: var(--top-bar-height);
     position: sticky;
     top: 0;
     display: flex;
     justify-content: center;
-    padding: 8px 12px;
-    z-index: 2;
-    backdrop-filter: blur(20px);
+    padding: 8px 12px 0px;
+    z-index: 3;
+    backdrop-filter: blur(50px);
 }
 
 .side {
     position: sticky;
-    top: 66px;
+    top: var(--top-bar-height);
     z-index: 1;
+    margin-left: 12px;
 }
 
 .content {

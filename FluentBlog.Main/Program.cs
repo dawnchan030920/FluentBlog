@@ -3,6 +3,7 @@ using FluentBlog.Service.Category;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Fast.Components.FluentUI;
+using Microsoft.Fast.Components.FluentUI.DesignTokens;
 using Fluxor;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
