@@ -10,6 +10,10 @@
     backdrop-filter: blur(50px);
 }
 
+.content {
+    display: flex;
+}
+
 .side {
     position: sticky;
     top: var(--top-bar-height);
@@ -17,7 +21,6 @@
     margin-left: 12px;
 }
 
-.content {
-    padding-top: 0px;
+.main {
     width: 100%;
 }

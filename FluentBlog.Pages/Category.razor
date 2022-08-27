@@ -4,112 +4,98 @@
 @using Fluxor.Blazor.Web.Components
 @inherits FluxorComponent
 @using FluentBlog.Model.Page
+@using FluentBlog.Model.Category
 @using FluentBlog.Service.Page
 @using FluentBlog.Service.Category
 @inject IDispatcher Dispatcher
 @using FluentBlog.Store.Page.Action
 @using FluentBlog.Store.Category
 @using FluentBlog.Store.Category.Action
-@using FluentBlog.Store.CategoryTab
-@using FluentBlog.Store.CategoryTab.Action
 @inject IState<CategoryState> CategoryState
-@inject IState<CategoryTabState> CategoryTabState
 @using Microsoft.Fast.Components.FluentUI
-@using FluentBlog.Components.Category
 @using FluentBlog.Components.ArticleOverview
+@inject NavigationManager NavigationManager
 
-<div>
-	@if (CategoryState.Value.Category is null)
-	{
-		<h3>Sorry there's no such category.</h3>
-	}
-	else
-	{
-        <FluentTabs ActiveId="@CategoryTabState.Value.TabActiveId">
-            <FluentTab id="@CategoryTabProvider.ArticlePanelId" @onclick="@(() => OverrideTabActiveId(CategoryTabProvider.ArticlePanelId))">Articles</FluentTab>
-            <FluentTab id="@CategoryTabProvider.CategoryPanelId" @onclick="@(() => OverrideTabActiveId(CategoryTabProvider.CategoryPanelId))">Categories</FluentTab>
-			<FluentTabPanel>
-				@if (CategoryState.Value.Category?.Articles is not null)
+<div style="display: flex;">
+	<div style="width: 100%;">
+		@if (CategoryState.Value.Category?.Articles is not null)
+		{
+			<ul style="padding: 0px 12px; list-style: none;">
+				@foreach (var overview in CategoryState.Value.Category.Articles)
 				{
-                    <ul class="article-list">
-					    @foreach (var article in CategoryState.Value.Category.Articles)
-					    {
-                            <li>
-                                <ArticleOverview Data="@article" />
-                            </li>
-					    }
-                    </ul>
+					<li style="padding: 12px 0px;">
+						<ArticleOverview Data="overview"/>
+					</li>
 				}
-			</FluentTabPanel>
-			<FluentTabPanel>
-				@if (CategoryState.Value.Category?.SubCategories is not null)
+			</ul>
+		}
+		else
+		{
+			<span style="font-family: var(--bs-body-font-family)">No articles in this category.</span>
+		}
+</div>
+	<aside style="width: auto; margin-right: 12px;">
+		<FluentAnchor style="width: 100%;">
+			<FluentIcon Name="@FluentIcons.ArrowSplit" Size="IconSize.Size16" Slot="start" Filled=true />
+		<span>@($"Subcategories ({(CategoryState.Value.Category?.SubCategories is null ? 0 : CategoryState.Value.Category?.SubCategories.Count)})")</span>
+		</FluentAnchor>
+
+		@if (CategoryState.Value.Category?.SubCategories is not null)
+		{
+			<FluentListbox TValue="string" style="width: 100%; margin-top: 8px;">
+				@foreach (var sub in CategoryState.Value.Category.SubCategories)
 				{
-                    <ul class="category-list">
-                        @foreach (var category in CategoryState.Value.Category.SubCategories)
-					    {
-                            <li>
-                                <FluentBlog.Components.Category.Category CategoryData="@category" />
-                            </li>
-					    }
-                    </ul>
+					<FluentOption TValue="string" @onclick="() => SubCategoryNavigate(sub)">@sub.Name</FluentOption>
 				}
-			</FluentTabPanel>
-		</FluentTabs>
-	}
+			</FluentListbox>
+		}
+	</aside>
 </div>
 
 @code {
-    public FluentTabs? tab { get; set; }
+	[Parameter]
+	public string? CategoryChainPrimitive { get; set; }
 
-    private PageData? page = PageDataProvider.Datas[PageDataProvider.Category];
-    private List<SubPageData>? sub;
+	private List<SubPageData>? sub { get; set; }
 
-    [Parameter]
-    public string? CategoryChainPrimitive { get; set; }
+	private PageData page = PageDataProvider.Datas[PageDataProvider.Category];
 
-    public List<string>? CategoryChain { get => CategoryChainPrimitive?.Split("/").ToList(); }
+	private List<string>? CategoryChain => CategoryChainPrimitive?.Split('/').ToList();
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-    }
+	protected override void OnParametersSet()
+	{
+		if (CategoryChain is null || CategoryChain.All(s => s == string.Empty))
+		{
+			Dispatcher.Dispatch(new CategoryChainClearAction());
+			Dispatcher.Dispatch(new PageResetAction(page));
+		}
+		else
+		{
+			Dispatcher.Dispatch(new CategoryChainSetAction(CategoryChain));
+			sub = new List<SubPageData>();
+			string baseUrl = "/category";
+			foreach (var category in CategoryChain)
+			{
+				baseUrl += $"/{category}";
+				sub.Add(new SubPageData(category, baseUrl));
+			}
+			Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
+		}
 
-    protected override void OnParametersSet()
-    {
-        UpdatePageState();
+		base.OnParametersSet();
+	}
 
-        if (!CategoryTabState.Value.ByForce)
-        {
-            Dispatcher.Dispatch(new CategoryTabSetAction(CategoryState.Value.Category?.SubCategories is null ? CategoryTabProvider.ArticlePanelId : CategoryTabProvider.CategoryPanelId));
-        }
-        else
-        {
-            CategoryTabState.Value.ByForce = false;
-        }
+	private void SubCategoryNavigate(CategoryData sub)
+	{
+		string url = "/category";
+		if (sub.CategoryChain is not null)
+		{
+			foreach (var category in sub.CategoryChain)
+			{
+				url += $"/{category}";
+			}
+		}
 
-        base.OnParametersSet();
-    }
-
-    private void UpdatePageState()
-    {
-        if (CategoryChain is null || CategoryChain.All(s => s == string.Empty))
-        {
-            Dispatcher.Dispatch(new CategoryChainClearAction());
-            Dispatcher.Dispatch(new PageResetAction(page));
-        }
-        else
-        {
-            Dispatcher.Dispatch(new CategoryChainSetAction(CategoryChain));
-            sub = new List<SubPageData>();
-            string baseUrl = "/category";
-            foreach (var category in CategoryChain)
-            {
-                baseUrl += $"/{category}";
-                sub.Add(new SubPageData(category, baseUrl));
-            }
-            Dispatcher.Dispatch(new MainSubPageSetAction(page, sub));
-        }
-    }
-
-    private void OverrideTabActiveId(string id) => Dispatcher.Dispatch(new CategoryTabSetAction(id));
+		NavigationManager.NavigateTo(url);
+	}
 }
